@@ -1,36 +1,22 @@
-# Majora's Mask: Recompiled Mod Template
+# Majora's Mask: Recompiled Randomizer Chest Display
 
-This is an example mod for Majora's Mask: Recompiled that can be used as a template for creating mods. It has a basic build system, headers, sample code, and a mod config toml.
+## Info
+This is a simple mod that displays every chest texture currently used in the [Majora's Mask: Recompiled Archipelago Randomizer](https://github.com/RecompRando/MMRecompRando).
 
-### Writing mods
-See [this document](https://hackmd.io/fMDiGEJ9TBSjomuZZOgzNg) for an explanation of the modding framework, including how to write function patches and perform interop between different mods.
+## Installation
+Download the [latest release](https://github.com/ThatHypedPerson/MMRecompBoxDisplay/releases/latest) of this mod and place it into the Zelda64Recomp mods folder.
+> This mod is incompatible with the actual randomizer mod, so make sure to remove it before using this.
 
-### Tools
-You'll need to install `clang` and `make` to build this template.
-* On Windows, using [chocolatey](https://chocolatey.org/) to install both is recommended. The packages are `llvm` and `make` respectively.
-  * The LLVM 19.1.0 [llvm-project](https://github.com/llvm/llvm-project) release binary, which is also what chocolatey provides, does not support MIPS correctly. The solution is to install 18.1.8 instead, which can be done in chocolatey by specifying `--version 18.1.8` or by downloading the 18.1.8 release directly.
-* On Linux, these can both be installed using your distro's package manager.
-* On MacOS, these can both be installed using Homebrew. Apple clang won't work, as you need a mips target for building the mod code.
+## Usage
+To use this mod, press `L` near any chest to change its textures. If using a debug build of Zelda64Recomp, then the currently displayed chest will also appear in its console.
 
-On Linux and MacOS, you'll need to also ensure that you have the `zip` utility installed.
-
-You'll also need to build [N64Recomp](https://github.com/N64Recomp/N64Recomp) for the `RecompModTool` utility.
-
-### Building
-* First, run `make` (with an optional job count) to build the mod code itself.
-* Next, run the `RecompModTool` utility with `mod.toml` as the first argument and the build dir (`build` in the case of this template) as the second argument.
-  * This will produce your mod's `.nrm` file in the build folder.
-* Finally, compile your mod offline.
-  * **This part is temporary and only needed while the recomp mod runtime doesn't have LuaJIT recompilation implemented**
-  * Start by running the `OfflineModRecomp` utility (included in the N64Recomp repo). Pass the following arguments: `build/mod_syms.bin build/mod_binary.bin Zelda64RecompSyms/mm.us.rev1.syms.toml build/mod_recompiled.c`
-  * Next, build the dynamic library from the generated `build/mod_recompiled.c` file and pass `offline_build` as an include path.
-    * On Windows, you can run:
-      ```
-      clang-cl build/mod_recompiled.c -fuse-ld=lld -Z7 /Ioffline_build /MD /O2 /link /DLL /OUT:build/mm_recomp_mod_template-1.0.0.dll
-      ```
-      On Linux, you can run:
-      ```
-      clang build/mod_recompiled.c -shared -fvisibility=hidden -fPIC -O2 -Ioffline_build -o build/mm_recomp_mod_template-1.0.0.so
-      ```
-    * Make sure your mod's dynamic library and .nrm file have the same filename (besides the extension).
-      * e.g. `testmod-1.0.0.nrm` and `testmod-1.0.0.dll`
+## Notes (Textures)
+All of the original textures used (in PNG format) can be found in the [textures folder](/textures/) of this repository. They are all applied as `RGBA16` in-game.
+<br><br>
+That folder is split into textures used by the [OoTMM Randomizer](https://github.com/OoTMM/OoTMM) ([link to original textures](https://github.com/OoTMM/OoTMM/tree/master/packages/core/data/assets/chests)) and [textures created by myself](/textures/archipelago/).
+<br><br>
+Not every texture found in the [OoTMM directory](/textures/ootmm/) are currently used within the randomizer, so they are not displayed. This mod can be updated to display them if needed.
+<br><br>
+All of the custom Archipelago chests use a slightly altered model than normal chests. This means there is a texture assigned to both sides of the front rather than a mirrored texture. The "Junk" chest also uses a different "blank" texture for its lid, which uses the wooden chest model rather than the ornate that the other chests use.
+<br><br>
+The custom Archipelago chests are edits of the original chest textures. The "Junk" chest is simply the original chest with filters applied, and the "Progressive" and "Useful" chests are edits of the Ornate textures.
